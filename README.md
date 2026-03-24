@@ -1,79 +1,87 @@
-# Admin Dashboard
+# 🗂️ Admin Dashboard — Internal Operations Panel
 
-> Internal admin panel for managing branches, users, documents, price checks, LPP/HPP systems, and more.
+> Internal admin panel untuk manajemen cabang, user, dokumen operasional,
+> analisis inventory (LPP/HPP), dan monitoring kwitansi.
 
 ![PHP](https://img.shields.io/badge/PHP-8.2-777BB4?logo=php&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)
+![License](https://img.shields.io/badge/License-Proprietary-red)
 
-## Features
+## 📸 Screenshots
+
+<!-- Tambahkan screenshot di sini -->
+| Dashboard | LPP Analytics | Price Check |
+|-----------|--------------|-------------|
+| *coming soon* | *coming soon* | *coming soon* |
+
+## ✨ Features
 
 | Module | Description |
 |--------|-------------|
-| **Dashboard** | Overview statistics and activity log |
-| **User Management** | CRUD users with roles and branch assignment |
-| **Branch Management** | Manage company branches |
-| **LPP System** | Laporan Penjualan & Piutang dashboard |
-| **HPP Calculator** | Harga Pokok Penjualan calculations |
-| **Price Check** | Upload & validate pricing data from Excel |
-| **Monitoring** | Track delivery and operational data |
-| **Documents** | Faktur templates, packing lists, tanda terima, kwitansi |
-| **SJ Link Generator** | Generate Surat Jalan tracking links |
-| **Text Tool** | Text processing utilities |
+| 📊 **Dashboard** | Overview statistics, activity log, and quick actions |
+| 👥 **User Management** | CRUD users with role-based access and branch assignment |
+| 🏢 **Branch Management** | Manage company branches with status tracking |
+| 📈 **LPP System** | Laporan Penjualan & Piutang — analytics, comparison, smart data explorer |
+| 🧮 **HPP Calculator** | Harga Pokok Penjualan simulation and calculations |
+| ✅ **Price Check** | Upload & validate pricing data from Excel files |
+| 📡 **Monitoring** | Track delivery and operational data in real-time |
+| 📄 **Documents** | Faktur templates, packing lists, tanda terima, kwitansi |
+| 🔗 **SJ Link Generator** | Generate Surat Jalan tracking links in batch |
+| 🔤 **Text Tool** | Text processing and formatting utilities |
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- **Backend**: PHP 8.2 (vanilla, no framework)
-- **Database**: MySQL 8.0 via PDO
-- **Frontend**: Vanilla JavaScript SPA + CSS
-- **Libraries**: Chart.js, SheetJS (xlsx), PDF.js
-- **Fonts**: Inter (Google Fonts)
-- **Icons**: Font Awesome 6
-- **Infrastructure**: Docker + Docker Compose
+| Layer | Technology |
+|-------|-----------|
+| **Backend** | PHP 8.2 (vanilla, no framework) |
+| **Database** | MySQL 8.0 via PDO |
+| **Frontend** | Vanilla JavaScript SPA + CSS |
+| **Charts** | Chart.js 4.x |
+| **Spreadsheet** | SheetJS (xlsx) |
+| **PDF** | PDF.js 3.x |
+| **Typography** | Inter (Google Fonts) |
+| **Icons** | Font Awesome 6 |
+| **Infrastructure** | Docker + Docker Compose |
 
-## Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 
 - [Docker](https://docs.docker.com/get-docker/) & [Docker Compose](https://docs.docker.com/compose/install/)
-- A shared Docker network for the database:
+- A shared Docker network:
   ```bash
   docker network create shared_net
   ```
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/your-username/admin-dashboard.git
-   cd admin-dashboard
-   ```
+```bash
+# 1. Clone
+git clone https://github.com/your-username/admin-dashboard.git
+cd admin-dashboard
 
-2. **Configure environment**
-   ```bash
-   cp .env.example .env
-   ```
-   Edit `.env` and set your database password:
-   ```env
-   DB_PASS=your_secure_password
-   ```
+# 2. Configure environment
+cp .env.example .env
+# Edit .env → set DB_PASS and other values
 
-3. **Start the application**
-   ```bash
-   docker compose up -d
-   ```
+# 3. Start
+docker compose up -d
 
-4. **Access the app**
-   Open [http://localhost:8081](http://localhost:8081)
+# 4. Open
+open http://localhost:8081
+```
 
-5. **Default login**
-   ```
-   Username: admin
-   Password: admin123
-   ```
-   > ⚠️ **Change the default password after first login!**
+### Default Login
 
-## Project Structure
+```
+Username: admin
+Password: (set saat pertama kali setup — lihat CHANGE_THIS_PASSWORD di Database.php)
+```
+
+> ⚠️ **Wajib ganti password setelah install pertama!**
+
+## 📁 Project Structure
 
 ```
 admin-dashboard/
@@ -98,19 +106,16 @@ admin-dashboard/
 │   ├── css/style.css       # Application styles
 │   └── js/                 # SPA JavaScript modules
 │       ├── app.js          # Main app + router
-│       ├── page-auth.js    # Login page
-│       ├── page-dashboard.js
-│       └── ...
+│       └── page-*.js       # Page modules
 ├── storage/                # User uploads (gitignored)
 ├── .env.example            # Environment template
 ├── .htaccess               # Apache security rules
 ├── Dockerfile              # PHP 8.2 Apache image
 ├── docker-compose.yml      # Docker services config
-├── index.html              # SPA entry point
-└── index.php               # Redirect to SPA
+└── index.html              # SPA entry point
 ```
 
-## Environment Variables
+## ⚙️ Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
@@ -120,18 +125,22 @@ admin-dashboard/
 | `DB_PASS` | — | Database password |
 | `DB_CHARSET` | `utf8mb4` | Database charset |
 | `LPP_DB_NAME` | `lpp_system` | LPP external database name |
+| `LPP_SCRIPT_PATH` | — | Path to LPP upload processor script |
 | `APP_NAME` | `AdminPanel` | Application display name |
 | `APP_VERSION` | `1.0.0` | Application version |
+| `APP_ENV` | — | Set to `development` for seed data |
 | `SESSION_LIFETIME` | `3600` | Session timeout (seconds) |
 
-## Security
+## 🔒 Security
 
-- Passwords hashed with `password_hash()` (bcrypt)
-- PDO prepared statements (no SQL injection)
-- Apache `.htaccess` blocks direct access to `/app` and `/database`
-- Database credentials stored in `.env` (never committed)
-- Session-based authentication with configurable lifetime
+- ✅ Passwords hashed with `password_hash()` (bcrypt)
+- ✅ PDO prepared statements — no SQL injection
+- ✅ Apache `.htaccess` blocks direct access to `/app` and `/database`
+- ✅ Credentials stored in `.env` — never committed to Git
+- ✅ `shell_exec` calls use `escapeshellcmd()` + `escapeshellarg()`
+- ✅ Upload temp files in `sys_get_temp_dir()` with restricted permissions
+- ✅ Dummy seed data only loads when `APP_ENV=development`
 
-## License
+## 📝 License
 
 This project is proprietary. All rights reserved.

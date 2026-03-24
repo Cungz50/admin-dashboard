@@ -75,41 +75,44 @@ try {
                 break;
             }
 
-            // Save uploaded file safely
-            $tempDir = __DIR__ . '/../uploads';
-            if (!is_dir($tempDir)) mkdir($tempDir, 0777, true);
-            $tempFile = $tempDir . '/' . uniqid('lpp_') . '.xlsx';
+            // NOTE: Upload processing via Python script is handled server-side.
+            // Script path is configured via environment variable: LPP_SCRIPT_PATH
+            $scriptPath = getenv('LPP_SCRIPT_PATH');
             
+            if (!$scriptPath || !file_exists($scriptPath)) {
+                echo json_encode([
+                    'success' => false, 
+                    'message' => 'Upload processor belum dikonfigurasi. Set LPP_SCRIPT_PATH di .env'
+                ]);
+                break;
+            }
+
+            $tempDir = sys_get_temp_dir() . '/lpp_uploads';
+            if (!is_dir($tempDir)) mkdir($tempDir, 0750, true);
+            $tempFile = $tempDir . '/' . uniqid('lpp_', true) . '.xlsx';
+
             if (!move_uploaded_file($_FILES['file']['tmp_name'], $tempFile)) {
-                echo json_encode(['success' => false, 'message' => 'Gagal menyimpan file Excel sementara']);
+                echo json_encode(['success' => false, 'message' => 'Gagal menyimpan file']);
                 break;
             }
 
-            // Path to Python script
-            $scriptPath = realpath(__DIR__ . '/../contoh code/lpp-system/scripts/process_upload.py');
-            if (!$scriptPath) {
-                echo json_encode(['success' => false, 'message' => 'Script Python tidak ditemukan']);
-                @unlink($tempFile);
-                break;
-            }
-
-            // Execute Python command
-            $cmd = escapeshellcmd("python") . " " . escapeshellarg($scriptPath) . " " . escapeshellarg($tempFile) . " " . escapeshellarg((string)$cabangId) . " " . escapeshellarg($start) . " " . escapeshellarg($end) . " " . escapeshellarg($bopbtk);
-            $output = shell_exec($cmd . ' 2>&1');
+            $cmd = sprintf(
+                '%s %s %s %s %s %s 2>&1',
+                escapeshellcmd('python3'),
+                escapeshellarg($scriptPath),
+                escapeshellarg($tempFile),
+                escapeshellarg((string)$cabangId),
+                escapeshellarg($start),
+                escapeshellarg($end)
+            );
             
-            // Cleanup
+            $output = shell_exec($cmd);
             @unlink($tempFile);
 
-            if (strpos($output, 'SUCCESS:') !== false) {
-                echo json_encode([
-                    'success' => true,
-                    'message' => trim($output),
-                ]);
+            if ($output && strpos($output, 'SUCCESS:') !== false) {
+                echo json_encode(['success' => true, 'message' => trim($output)]);
             } else {
-                echo json_encode([
-                    'success' => false,
-                    'message' => "Python Error:\n" . trim($output),
-                ]);
+                echo json_encode(['success' => false, 'message' => 'Proses gagal: ' . trim($output)]);
             }
             break;
 

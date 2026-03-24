@@ -190,47 +190,54 @@ class Database
         $stmt = $db->prepare("SELECT COUNT(*) FROM users WHERE username = ?");
         $stmt->execute(['admin']);
         if ($stmt->fetchColumn() == 0) {
-            $hash = password_hash('admin123', PASSWORD_DEFAULT);
+            $hash = password_hash('CHANGE_THIS_PASSWORD', PASSWORD_DEFAULT);
             $db->prepare("
                 INSERT INTO users (username, email, password, full_name, role, status, branch_id)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
-            ")->execute(['admin', 'admin@example.com', $hash, 'Administrator', 'admin', 'active', null]);
+            ")->execute(['admin', 'admin@yourdomain.com', $hash, 'Administrator', 'admin', 'active', null]);
+        }
 
-            $users = [
-                ['johndoe', 'john@example.com', 'John Doe', 'user', 'active', 1],
-                ['janedoe', 'jane@example.com', 'Jane Doe', 'editor', 'active', 1],
-                ['bobsmith', 'bob@example.com', 'Bob Smith', 'user', 'inactive', 2],
-                ['alicew', 'alice@example.com', 'Alice Williams', 'user', 'active', 2],
-                ['charlie', 'charlie@example.com', 'Charlie Brown', 'editor', 'active', 3],
-                ['diana', 'diana@example.com', 'Diana Prince', 'user', 'active', 3],
-                ['edward', 'edward@example.com', 'Edward Norton', 'user', 'inactive', 1],
-                ['fiona', 'fiona@example.com', 'Fiona Apple', 'user', 'active', 2],
-            ];
-            $stmt = $db->prepare("
-                INSERT INTO users (username, email, password, full_name, role, status, branch_id)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            ");
-            foreach ($users as $user) {
-                $stmt->execute([$user[0], $user[1], password_hash('password123', PASSWORD_DEFAULT), $user[2], $user[3], $user[4], $user[5]]);
-            }
+        // Sample users — REMOVE IN PRODUCTION
+        if (getenv('APP_ENV') === 'development') {
+            $stmt = $db->prepare("SELECT COUNT(*) FROM users WHERE username = ?");
+            $stmt->execute(['johndoe']);
+            if ($stmt->fetchColumn() == 0) {
+                $users = [
+                    ['johndoe', 'john@example.com', 'John Doe', 'user', 'active', 1],
+                    ['janedoe', 'jane@example.com', 'Jane Doe', 'editor', 'active', 1],
+                    ['bobsmith', 'bob@example.com', 'Bob Smith', 'user', 'inactive', 2],
+                    ['alicew', 'alice@example.com', 'Alice Williams', 'user', 'active', 2],
+                    ['charlie', 'charlie@example.com', 'Charlie Brown', 'editor', 'active', 3],
+                    ['diana', 'diana@example.com', 'Diana Prince', 'user', 'active', 3],
+                    ['edward', 'edward@example.com', 'Edward Norton', 'user', 'inactive', 1],
+                    ['fiona', 'fiona@example.com', 'Fiona Apple', 'user', 'active', 2],
+                ];
+                $insert = $db->prepare("
+                    INSERT INTO users (username, email, password, full_name, role, status, branch_id)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                ");
+                foreach ($users as $user) {
+                    $insert->execute([$user[0], $user[1], password_hash('password123', PASSWORD_DEFAULT), $user[2], $user[3], $user[4], $user[5]]);
+                }
 
-            // Seed activity log
-            $activities = [
-                [1, 'login', 'Administrator logged in'],
-                [2, 'login', 'John Doe logged in'],
-                [1, 'create_user', 'Created user: janedoe'],
-                [3, 'update_profile', 'Jane Doe updated profile'],
-                [1, 'login', 'Administrator logged in'],
-                [4, 'login', 'Bob Smith logged in'],
-                [1, 'create_user', 'Created user: alicew'],
-                [5, 'login', 'Alice Williams logged in'],
-            ];
-            $stmt = $db->prepare("
-                INSERT INTO activity_log (user_id, action, description, ip_address)
-                VALUES (?, ?, ?, '127.0.0.1')
-            ");
-            foreach ($activities as $act) {
-                $stmt->execute([$act[0], $act[1], $act[2]]);
+                // Seed activity log
+                $activities = [
+                    [1, 'login', 'Administrator logged in'],
+                    [2, 'login', 'John Doe logged in'],
+                    [1, 'create_user', 'Created user: janedoe'],
+                    [3, 'update_profile', 'Jane Doe updated profile'],
+                    [1, 'login', 'Administrator logged in'],
+                    [4, 'login', 'Bob Smith logged in'],
+                    [1, 'create_user', 'Created user: alicew'],
+                    [5, 'login', 'Alice Williams logged in'],
+                ];
+                $logStmt = $db->prepare("
+                    INSERT INTO activity_log (user_id, action, description, ip_address)
+                    VALUES (?, ?, ?, '127.0.0.1')
+                ");
+                foreach ($activities as $act) {
+                    $logStmt->execute([$act[0], $act[1], $act[2]]);
+                }
             }
         }
     }
