@@ -36,7 +36,7 @@ function renderLogin() {
                     </button>
                 </form>
                 <div class="login-footer">
-                    <p>Default: <strong>admin</strong> / <strong>admin123</strong></p>
+                    <p>Login dengan akun yang sudah terdaftar</p>
                 </div>
             </div>
         </div>

@@ -165,13 +165,13 @@ INSERT INTO branches (name, code, address, phone, status) VALUES
 ('Cabang Surabaya', 'SBY', 'Jl. Basuki Rahmat No. 100, Surabaya', '031-5321000', 'active');
 
 -- =============================================
--- Seed: Admin user (password: admin123) — no branch (access all)
+-- Seed: Admin user — no branch (access all)
 -- =============================================
 INSERT INTO users (username, email, password, full_name, role, status, branch_id) VALUES
 ('admin', 'admin@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Administrator', 'admin', 'active', NULL);
 
 -- =============================================
--- Seed: Sample users (password: password123) — assigned to branches
+-- Seed: Sample users — assigned to branches
 -- =============================================
 INSERT INTO users (username, email, password, full_name, role, status, branch_id) VALUES
 ('johndoe', 'john@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'John Doe', 'user', 'active', 1),

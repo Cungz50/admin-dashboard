@@ -27,6 +27,6 @@ CREATE TABLE IF NOT EXISTS activity_log (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
--- Seed admin user (password: admin123)
+-- Seed admin user
 -- INSERT INTO users (username, email, password, full_name, role, status)
 -- VALUES ('admin', 'admin@example.com', '$2y$10$...', 'Administrator', 'admin', 'active');
