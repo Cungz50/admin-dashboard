@@ -15,7 +15,7 @@ services:
       - DB_HOST=db                     # selalu "db", karena ngikut nama service di shared
       - DB_NAME=${DB_NAME:-admin_dashboard}
       - DB_USER=${DB_USER:-root}
-      - DB_PASS=${DB_PASS:-changeme}
+      - DB_PASS=${DB_PASS:?err}   # wajib diset, ga ada fallback
     networks:
       - shared_net                     # join ke shared network
 

@@ -74,12 +74,20 @@ open http://localhost:8081
 
 ### Default Login
 
-```
-Username: admin
-Password: (set saat pertama kali setup — lihat CHANGE_THIS_PASSWORD di Database.php)
+Setelah install, set password admin via:
+
+```bash
+# Generate hash baru
+php -r "echo password_hash('your_password', PASSWORD_DEFAULT);"
 ```
 
-> ⚠️ **Wajib ganti password setelah install pertama!**
+Atau set langsung di database:
+
+```sql
+UPDATE users SET password = '<hash_result>' WHERE username = 'admin';
+```
+
+> ⚠️ **Jangan gunakan password default di production!**
 
 ## 📁 Project Structure
 
@@ -122,13 +130,15 @@ admin-dashboard/
 | `DB_HOST` | `db` | Database hostname |
 | `DB_NAME` | `admin_dashboard` | Database name |
 | `DB_USER` | `root` | Database username |
-| `DB_PASS` | — | Database password |
+| `DB_PASS` | — | Database password (**wajib**) |
 | `DB_CHARSET` | `utf8mb4` | Database charset |
 | `LPP_DB_NAME` | `lpp_system` | LPP external database name |
+| `DELIVERY_ORDER_URL` | — | Base URL for delivery order system |
 | `LPP_SCRIPT_PATH` | — | Path to LPP upload processor script |
 | `APP_NAME` | `AdminPanel` | Application display name |
 | `APP_VERSION` | `1.0.0` | Application version |
 | `APP_ENV` | — | Set to `development` for seed data |
+| `APP_URL` | `http://localhost:8081` | App URL (used for CORS) |
 | `SESSION_LIFETIME` | `3600` | Session timeout (seconds) |
 
 ## 🔒 Security

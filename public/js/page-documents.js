@@ -882,7 +882,7 @@ function renderTandaTerimaCreate() {
                     <tr class="tt-item-row">
                         <td>
                             <div style="display:flex;align-items:center;gap:4px;flex-wrap:nowrap;">
-                                <span style="font-size:11px;color:var(--text-muted);white-space:nowrap;">KW.IIA-YCE/</span>
+                                <span style="font-size:11px;color:var(--text-muted);white-space:nowrap;">${window.APP_KW_PREFIX || 'KW.XXX-YYY/'}</span>
                                 <input type="text" class="form-input tt-kw-number" style="width:65px;padding:6px;font-size:12px;" maxlength="5" placeholder="01390">
                                 <span style="font-size:11px;color:var(--text-muted);">/</span>
                                 <input type="text" class="form-input tt-kw-month" style="width:45px;padding:6px;font-size:12px;" maxlength="4" placeholder="VII">
@@ -951,7 +951,7 @@ function bindTandaTerimaCreate() {
         tr.innerHTML = `
             <td>
                 <div style="display:flex;align-items:center;gap:4px;flex-wrap:nowrap;">
-                    <span style="font-size:11px;color:var(--text-muted);white-space:nowrap;">KW.IIA-YCE/</span>
+                    <span style="font-size:11px;color:var(--text-muted);white-space:nowrap;">${window.APP_KW_PREFIX || 'KW.XXX-YYY/'}</span>
                     <input type="text" class="form-input tt-kw-number" style="width:65px;padding:6px;font-size:12px;" maxlength="5" placeholder="${newNum}" value="${newNum}">
                     <span style="font-size:11px;color:var(--text-muted);">/</span>
                     <input type="text" class="form-input tt-kw-month" style="width:45px;padding:6px;font-size:12px;" maxlength="4" placeholder="VII" value="VII">
@@ -1012,7 +1012,7 @@ function bindTandaTerimaCreate() {
                 return;
             }
 
-            const noKwitansi = `KW.IIA-YCE/${kwNum.padStart(5, '0')}/${kwMonth}/${year}`;
+            const noKwitansi = `${window.APP_KW_PREFIX || 'KW.XXX-YYY/'}${kwNum.padStart(5, '0')}/${kwMonth}/${year}`;
             items.push({ no_kwitansi: noKwitansi, no_faktur: faktur, jumlah_tagihan: tagihan, periode_dari: dari, periode_sampai: sampai, no_ttfa: ttfa });
         });
 
@@ -1074,8 +1074,8 @@ th{background-color:#f2f2f2}
 @page{size:8.5in 5.5in;margin:10mm}
 @media print{body{margin:0;padding:0;print-color-adjust:exact}}
 </style></head><body>
-<h3>PT. Inti Idola Anugerah</h3>
-<p>Cibinong<br>Telp 021 – 2923 0461/0462 Ext. 117</p>
+<h3>${window.APP_COMPANY_NAME || 'PT. Your Company Name'}</h3>
+<p>${window.APP_COMPANY_ADDRESS || 'Alamat Perusahaan'}<br>Telp ${window.APP_COMPANY_PHONE || '(021) XXXX-XXXX'}</p>
 <h2>TANDA TERIMA TAGIHAN</h2>
 <p>Sudah diterima dari / diberikan kepada: <strong>${esc(record.penerima).toUpperCase()}</strong></p>
 <table>
@@ -1090,7 +1090,7 @@ ${items.map((it, i) => `<tr>
 <td>${esc(it.no_ttfa || '')}</td>
 </tr>`).join('')}
 </tbody></table>
-<div class="note"><strong>NOTE:</strong><br>Jika Tanda Terima Tagihan ini sudah diterima,<br><strong>Mohon discan & dikirim ke email: adminvoice_cbn@yummychoice.co.id</strong></div>
+<div class="note"><strong>NOTE:</strong><br>Jika Tanda Terima Tagihan ini sudah diterima,<br><strong>Mohon discan & dikirim ke email: ${window.APP_FINANCE_EMAIL || 'finance@yourdomain.com'}</strong></div>
 <div class="ttd-container">
 <div class="ttd-box"><p>Penerima,</p><div class="ttd-space"></div><p>(...........................................)</p></div>
 <div class="ttd-box"><p>${fmtDateLong(record.tanggal)}</p><p>Yang Menyerahkan,</p><div class="ttd-space"></div><p>(...........................................)</p></div>

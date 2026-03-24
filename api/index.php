@@ -14,8 +14,9 @@ set_error_handler(function ($severity, $message, $file, $line) {
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 
-// CORS (same-origin, but just in case)
-header('Access-Control-Allow-Origin: *');
+// CORS
+$allowedOrigin = defined('APP_URL') ? APP_URL : (getenv('APP_URL') ?: 'http://localhost:8081');
+header('Access-Control-Allow-Origin: ' . $allowedOrigin);
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 

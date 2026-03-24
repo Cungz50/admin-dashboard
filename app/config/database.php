@@ -43,5 +43,12 @@ define('APP_VERSION', getenv('APP_VERSION') ?: '1.0.0');
 // Session configuration
 define('SESSION_LIFETIME', (int)(getenv('SESSION_LIFETIME') ?: 3600));
 
+// Application URL (for CORS)
+define('APP_URL', getenv('APP_URL') ?: 'http://localhost:8081');
+
+// Internal system URLs
+define('DELIVERY_ORDER_URL', getenv('DELIVERY_ORDER_URL') ?: '');
+define('LPP_SCRIPT_PATH', getenv('LPP_SCRIPT_PATH') ?: '');
+
 // Timezone
 date_default_timezone_set('Asia/Jakarta');

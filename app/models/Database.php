@@ -197,46 +197,26 @@ class Database
             ")->execute(['admin', 'admin@yourdomain.com', $hash, 'Administrator', 'admin', 'active', null]);
         }
 
-        // Sample users — REMOVE IN PRODUCTION
+        // Sample users — hanya untuk development
         if (getenv('APP_ENV') === 'development') {
             $stmt = $db->prepare("SELECT COUNT(*) FROM users WHERE username = ?");
-            $stmt->execute(['johndoe']);
+            $stmt->execute(['user1']);
             if ($stmt->fetchColumn() == 0) {
-                $users = [
-                    ['johndoe', 'john@example.com', 'John Doe', 'user', 'active', 1],
-                    ['janedoe', 'jane@example.com', 'Jane Doe', 'editor', 'active', 1],
-                    ['bobsmith', 'bob@example.com', 'Bob Smith', 'user', 'inactive', 2],
-                    ['alicew', 'alice@example.com', 'Alice Williams', 'user', 'active', 2],
-                    ['charlie', 'charlie@example.com', 'Charlie Brown', 'editor', 'active', 3],
-                    ['diana', 'diana@example.com', 'Diana Prince', 'user', 'active', 3],
-                    ['edward', 'edward@example.com', 'Edward Norton', 'user', 'inactive', 1],
-                    ['fiona', 'fiona@example.com', 'Fiona Apple', 'user', 'active', 2],
+                $sampleUsers = [
+                    ['user1', 'user1@example.com', 'User One',   'user',   'active',   1],
+                    ['user2', 'user2@example.com', 'User Two',   'editor', 'active',   1],
+                    ['user3', 'user3@example.com', 'User Three', 'user',   'inactive', 2],
                 ];
                 $insert = $db->prepare("
                     INSERT INTO users (username, email, password, full_name, role, status, branch_id)
                     VALUES (?, ?, ?, ?, ?, ?, ?)
                 ");
-                foreach ($users as $user) {
-                    $insert->execute([$user[0], $user[1], password_hash('password123', PASSWORD_DEFAULT), $user[2], $user[3], $user[4], $user[5]]);
-                }
-
-                // Seed activity log
-                $activities = [
-                    [1, 'login', 'Administrator logged in'],
-                    [2, 'login', 'John Doe logged in'],
-                    [1, 'create_user', 'Created user: janedoe'],
-                    [3, 'update_profile', 'Jane Doe updated profile'],
-                    [1, 'login', 'Administrator logged in'],
-                    [4, 'login', 'Bob Smith logged in'],
-                    [1, 'create_user', 'Created user: alicew'],
-                    [5, 'login', 'Alice Williams logged in'],
-                ];
-                $logStmt = $db->prepare("
-                    INSERT INTO activity_log (user_id, action, description, ip_address)
-                    VALUES (?, ?, ?, '127.0.0.1')
-                ");
-                foreach ($activities as $act) {
-                    $logStmt->execute([$act[0], $act[1], $act[2]]);
+                foreach ($sampleUsers as $u) {
+                    $insert->execute([
+                        $u[0], $u[1],
+                        password_hash('dev_password_only', PASSWORD_DEFAULT),
+                        $u[2], $u[3], $u[4], $u[5]
+                    ]);
                 }
             }
         }

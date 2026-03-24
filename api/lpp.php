@@ -66,28 +66,28 @@ try {
         // ─── Upload (Python Script Exec) ───
         case 'upload':
             $cabangId = (int)($_POST['cabang_id'] ?? 0);
-            $start = $_POST['periode_start'] ?? '';
-            $end = $_POST['periode_end'] ?? '';
-            $bopbtk = $_POST['bopbtk_periode'] ?? 'Sebelum BOPBTK';
+            $start    = $_POST['periode_start'] ?? '';
+            $end      = $_POST['periode_end'] ?? '';
+            $bopbtk   = $_POST['bopbtk_periode'] ?? 'Sebelum BOPBTK';
 
             if (!$cabangId || !$start || !$end || empty($_FILES['file'])) {
-                echo json_encode(['success' => false, 'message' => 'Lengkapi form dan pilih file Excel']);
-                break;
-            }
-
-            // NOTE: Upload processing via Python script is handled server-side.
-            // Script path is configured via environment variable: LPP_SCRIPT_PATH
-            $scriptPath = getenv('LPP_SCRIPT_PATH');
-            
-            if (!$scriptPath || !file_exists($scriptPath)) {
                 echo json_encode([
-                    'success' => false, 
-                    'message' => 'Upload processor belum dikonfigurasi. Set LPP_SCRIPT_PATH di .env'
+                    'success' => false,
+                    'message' => 'Lengkapi form dan pilih file Excel'
                 ]);
                 break;
             }
 
-            $tempDir = sys_get_temp_dir() . '/lpp_uploads';
+            $scriptPath = defined('LPP_SCRIPT_PATH') ? LPP_SCRIPT_PATH : '';
+            if (!$scriptPath || !file_exists($scriptPath)) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Upload processor belum dikonfigurasi.'
+                ]);
+                break;
+            }
+
+            $tempDir  = sys_get_temp_dir() . '/lpp_uploads';
             if (!is_dir($tempDir)) mkdir($tempDir, 0750, true);
             $tempFile = $tempDir . '/' . uniqid('lpp_', true) . '.xlsx';
 
@@ -97,22 +97,24 @@ try {
             }
 
             $cmd = sprintf(
-                '%s %s %s %s %s %s 2>&1',
-                escapeshellcmd('python3'),
+                'python3 %s %s %s %s %s 2>&1',
                 escapeshellarg($scriptPath),
                 escapeshellarg($tempFile),
                 escapeshellarg((string)$cabangId),
                 escapeshellarg($start),
                 escapeshellarg($end)
             );
-            
+
             $output = shell_exec($cmd);
             @unlink($tempFile);
 
             if ($output && strpos($output, 'SUCCESS:') !== false) {
                 echo json_encode(['success' => true, 'message' => trim($output)]);
             } else {
-                echo json_encode(['success' => false, 'message' => 'Proses gagal: ' . trim($output)]);
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Proses gagal. Cek konfigurasi server.'
+                ]);
             }
             break;
 

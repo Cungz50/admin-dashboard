@@ -150,10 +150,8 @@ function bindMonitoringPage() {
             if (records.length === 0) { showToast('Tidak ada data untuk di-export.', 'warning'); return; }
 
             const cabangMap = {
-                'G001':'Jakarta 1','G026':'Tangerang 1','G033':'Tangerang 2','G049':'Pekanbaru',
-                'G107':'Parung','G113':'Bogor 1','G117':'Bogor 2','G137':'Jakarta 2','G143':'Jambi',
-                'G146':'Lombok','G157':'Lebak','G165':'Bengkulu','G174':'Ternate','G236':'Sorong',
-                'G237':'Kupang','G263':'Jayapura','G272':'Sumba','G273':'Manokwari','G283':'Merauke','G295':'Sukabumi'
+                // Branch codes configured per deployment
+                // Add your branch mappings here
             };
 
             let csv = 'KDCAB,Nama Cabang,Tanggal,No Kwitansi,No Faktur,DPP,PPN,Total,No TTF,Tgl Kirim Tagihan\n';
@@ -251,7 +249,7 @@ function bindMonitoringImport() {
             for (const line of lines) {
                 const trimmed = line.trim();
                 if (!trimmed) continue;
-                if (/^(SUBTOTAL|TOTAL|KDCAB|Periode|REGISTER|IIA|014YMP)/i.test(trimmed)) continue;
+                if (/^(SUBTOTAL|TOTAL|KDCAB|Periode|REGISTER)/i.test(trimmed)) continue;
 
                 // Match pattern: KDCAB DATE KWITANSI FAKTUR DPP PPN TOTAL
                 const m = trimmed.match(/^(G\d{3}|[A-Z]{2,})\s+(\d{1,2}-[A-Za-z]{3}-\d{4})\s+(KW\.IIA\s*-\s*[^\s]+.*?\d{4}\/[A-Z]+_[A-Z]+)\s+(\d+\.\d+[.\-]\d+[.\-]\d+)\s+([\d,]+)\s+([\d,]+)\s+([\d,]+)\s*$/);

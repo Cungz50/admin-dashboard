@@ -111,11 +111,14 @@ class SjLink
         $date = self::parseSjDate($sjNumber);
         if (!$date) return null;
 
+        $baseUrl = defined('DELIVERY_ORDER_URL') ? DELIVERY_ORDER_URL : '';
+        if (!$baseUrl) return null;
+
         $dt = new DateTime($date);
         $day   = $dt->format('d');
         $month = $dt->format('F');
         $year  = $dt->format('Y');
 
-        return "http://10.254.137.47/IIAWeb/deliveryorders/printDeliveryOrders?_date={$day}-{$month}-{$year}&_type=QR&_noNota={$sjNumber}";
+        return "{$baseUrl}?_date={$day}-{$month}-{$year}&_type=QR&_noNota={$sjNumber}";
     }
 }
