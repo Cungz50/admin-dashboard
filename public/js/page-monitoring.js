@@ -252,7 +252,11 @@ function bindMonitoringImport() {
                 if (/^(SUBTOTAL|TOTAL|KDCAB|Periode|REGISTER)/i.test(trimmed)) continue;
 
                 // Match pattern: KDCAB DATE KWITANSI FAKTUR DPP PPN TOTAL
-                const m = trimmed.match(/^(G\d{3}|[A-Z]{2,})\s+(\d{1,2}-[A-Za-z]{3}-\d{4})\s+(KW\.IIA\s*-\s*[^\s]+.*?\d{4}\/[A-Z]+_[A-Z]+)\s+(\d+\.\d+[.\-]\d+[.\-]\d+)\s+([\d,]+)\s+([\d,]+)\s+([\d,]+)\s*$/);
+                const kwPrefix = (window.APP_KW_PREFIX || 'KW\\.').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const kwPattern = new RegExp(
+                    `^(G\\d{3}|[A-Z]{2,})\\s+(\\d{1,2}-[A-Za-z]{3}-\\d{4})\\s+(${kwPrefix}[^\\s]+.*?\\d{4}\\/[A-Z]+_[A-Z]+)\\s+(\\d+\\.\\d+[.\\-]\\d+[.\\-]\\d+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s*$`
+                );
+                const m = trimmed.match(kwPattern);
                 if (m) {
                     const tanggalStr = m[2];
                     let tanggal = '';

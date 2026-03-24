@@ -165,33 +165,25 @@ INSERT INTO branches (name, code, address, phone, status) VALUES
 ('Cabang Surabaya', 'SBY', 'Jl. Basuki Rahmat No. 100, Surabaya', '031-5321000', 'active');
 
 -- =============================================
--- Seed: Admin user — no branch (access all)
+-- Seed: Admin user
+-- Generate password hash via:
+-- php -r "echo password_hash('your_password', PASSWORD_DEFAULT);"
+-- Lalu update manual: UPDATE users SET password='<hash>' WHERE username='admin';
 -- =============================================
-INSERT INTO users (username, email, password, full_name, role, status, branch_id) VALUES
-('admin', 'admin@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Administrator', 'admin', 'active', NULL);
+-- INSERT INTO users (username, email, password, full_name, role, status, branch_id) VALUES
+-- ('admin', 'admin@yourdomain.com', '<YOUR_BCRYPT_HASH>', 'Administrator', 'admin', 'active', NULL);
 
 -- =============================================
--- Seed: Sample users — assigned to branches
+-- Seed: Sample users — DEVELOPMENT ONLY, hapus sebelum production
 -- =============================================
-INSERT INTO users (username, email, password, full_name, role, status, branch_id) VALUES
-('johndoe', 'john@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'John Doe', 'user', 'active', 1),
-('janedoe', 'jane@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Jane Doe', 'editor', 'active', 1),
-('bobsmith', 'bob@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Bob Smith', 'user', 'inactive', 2),
-('alicew', 'alice@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Alice Williams', 'user', 'active', 2),
-('charlie', 'charlie@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Charlie Brown', 'editor', 'active', 3),
-('diana', 'diana@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Diana Prince', 'user', 'active', 3),
-('edward', 'edward@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Edward Norton', 'user', 'inactive', 1),
-('fiona', 'fiona@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Fiona Apple', 'user', 'active', 2);
+-- INSERT INTO users (username, email, password, full_name, role, status, branch_id) VALUES
+-- ('user1', 'user1@example.com', '<HASH>', 'User One', 'user', 'active', 1),
+-- ('user2', 'user2@example.com', '<HASH>', 'User Two', 'editor', 'active', 1),
+-- ('user3', 'user3@example.com', '<HASH>', 'User Three', 'user', 'inactive', 2);
 
 -- =============================================
--- Seed: Activity log
+-- Seed: Activity log (uncomment if needed)
 -- =============================================
-INSERT INTO activity_log (user_id, action, description, ip_address) VALUES
-(1, 'login', 'Administrator logged in', '127.0.0.1'),
-(2, 'login', 'John Doe logged in', '127.0.0.1'),
-(1, 'create_user', 'Created user: janedoe', '127.0.0.1'),
-(3, 'update_profile', 'Jane Doe updated profile', '127.0.0.1'),
-(1, 'login', 'Administrator logged in', '127.0.0.1'),
-(4, 'login', 'Bob Smith logged in', '127.0.0.1'),
-(1, 'create_user', 'Created user: alicew', '127.0.0.1'),
-(5, 'login', 'Alice Williams logged in', '127.0.0.1');
+-- INSERT INTO activity_log (user_id, action, description, ip_address) VALUES
+-- (1, 'login', 'Administrator logged in', '127.0.0.1');
+
