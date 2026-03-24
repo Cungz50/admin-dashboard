@@ -1,0 +1,11 @@
+# Protect database folder
+<FilesMatch "\.(db|sql)$">
+    Require all denied
+</FilesMatch>
+
+# Protect app folder
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^app/ - [F,L]
+    RewriteRule ^database/ - [F,L]
+</IfModule>

@@ -1,0 +1,25 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: admin_dashboard   # <-- ganti sesuai nama project
+    restart: unless-stopped
+    ports:
+      - "8081:80"                      # <-- ganti port, beda tiap project!
+    volumes:
+      - .:/var/www/html
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=db                     # selalu "db", karena ngikut nama service di shared
+      - DB_NAME=${DB_NAME:-admin_dashboard}
+      - DB_USER=${DB_USER:-root}
+      - DB_PASS=${DB_PASS:-changeme}
+    networks:
+      - shared_net                     # join ke shared network
+
+networks:
+  shared_net:
+    external: true                     # <-- ini kuncinya, pake network yang udah ada
+    name: shared_net

@@ -1,0 +1,58 @@
+# ===========================
+# Environment
+# ===========================
+.env
+.env.local
+.env.*.local
+
+# ===========================
+# Database Files
+# ===========================
+database/*.db
+database/*.sqlite
+mysql_data/
+
+# ===========================
+# Storage (user uploads)
+# ===========================
+storage/faktur-templates/*
+storage/price-checks/*
+!storage/faktur-templates/.gitkeep
+!storage/price-checks/.gitkeep
+
+# ===========================
+# Reference / Scratch Code
+# ===========================
+contoh-code/
+
+# ===========================
+# IDE & Editor
+# ===========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+nbproject/
+
+# ===========================
+# OS Generated
+# ===========================
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# ===========================
+# Logs
+# ===========================
+*.log
+npm-debug.log*
+
+# ===========================
+# Dependencies (if any)
+# ===========================
+vendor/
+node_modules/
